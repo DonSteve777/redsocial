@@ -23,4 +23,27 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User updateUser(Long id, User user) {
+        return userRepository.findById(id)
+            .map(existingUser -> {
+                // Actualizar solo los campos no nulos
+                if (user.getUsername() != null) {
+                    existingUser.setUsername(user.getUsername());
+                }
+                if (user.getEmail() != null) {
+                    existingUser.setEmail(user.getEmail());
+                }
+                if (user.getPassword() != null) {
+                    existingUser.setPassword(user.getPassword());
+                }
+                // Guardar los cambios
+                return userRepository.save(existingUser);
+            })
+            .orElse(null);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
 }
