@@ -43,6 +43,9 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null)
+            throw new UserNotFoundException(id);
         userRepository.deleteById(id);
     }
 
