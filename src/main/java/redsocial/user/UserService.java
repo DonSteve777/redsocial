@@ -16,7 +16,10 @@ public class UserService {
     }   
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null)
+            throw new UserNotFoundException(id);
+        return user;
     }
 
     public User createUser(User user) {

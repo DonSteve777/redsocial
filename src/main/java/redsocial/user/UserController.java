@@ -30,11 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        if (user == null)
-            throw new UserNotFoundException(id);
-        return ResponseEntity.ok(user);
+    public User getUserById(@PathVariable Long id) {
+        return userService.getUserById(id);
     }
 
     @PostMapping
@@ -56,16 +53,5 @@ public class UserController {
         userService.deleteUser(id);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorBody handleUserNotFoundException(UserNotFoundException ex) {
-        return new ErrorBody(ex.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorBody handleGeneralException(Exception ex) {
-        return new ErrorBody("Error interno del servidor: " + ex.getMessage());
-    }
 
 }
